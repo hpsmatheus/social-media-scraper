@@ -1,26 +1,19 @@
-version: '3.9'
+version: '3.8'
 
 services:
-
-  db:
-    image: postgres:alpine
+  app:
+    build: .
     ports:
-      - '5432:5432'
-    container_name: 'db'
-    restart: always
-    volumes:
-      - pg-data:/var/lib/postgresql/data
+      - '3000:3000'
     environment:
-      POSTGRES_USER: pgsql
-      POSTGRES_PASSWORD: pgsql
+      mongo__protocol: 'mongodb'
+      mongo__host: 'mongo'
+      mongo__port: '27017'
+      mongo__database: 'scraper'
+    depends_on:
+      - mongo
 
-  adminer:
-    image: adminer
-    restart: always
+  mongo:
+    image: mongo
     ports:
-      - 8080:8080
-
-
-
-volumes:
-  pg-data:
+      - '27017:27017'

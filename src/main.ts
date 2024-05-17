@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
+import AppModule from './app.module'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import ApiValidationPipe from './core/api-validation-pipe'
 import RequestInterceptor from './core/request-interceptor/request.interceptor'
