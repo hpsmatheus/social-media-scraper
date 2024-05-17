@@ -1,9 +1,12 @@
 import { Injectable, NotImplementedException } from '@nestjs/common'
 import * as needle from 'needle'
+import PostService from '../post/post.service'
 
 @Injectable()
 export default class TwitterScraper {
-	static getTweets(): void {
+	constructor(private readonly postService: PostService) {}
+
+	getTweets(): void {
 		const streamURL = process.env.TWITTER_STREAM_URL
 
 		const stream = needle.get(streamURL, {
@@ -17,7 +20,7 @@ export default class TwitterScraper {
 		stream
 			.on('data', (data) => {
 				try {
-					console.log('DATA', JSON.parse(data))
+					this.postService.create(JSON.parse(data))
 				} catch (e) {
 					if (data.detail === 'This stream is currently at the maximum allowed connection limit.') {
 						console.log(data.detail)
