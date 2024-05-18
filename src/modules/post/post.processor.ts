@@ -27,6 +27,7 @@ export default class PostProcessor {
 			})
 			await this.postService.create(posts)
 			await this.cacheService.removeFromList(cacheList, batchSize)
+			await this.postService.archiveOldPosts()
 		}
 	}
 }
