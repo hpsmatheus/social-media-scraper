@@ -9,10 +9,22 @@
 	},
 	{
 		"id": "1067094924124872702",
-		"text": "tweet 2 #random"
+		"text": "tweet 2 #tech"
 	},
 	{
 		"id": "1067094924124872700",
 		"text": "tweet 3 #tech"
+	},
+	{
+		"id": "1067094924124872701",
+		"text": "tweet 4 #tech"
+	},
+	{
+		"id": "1067094924124872703",
+		"text": "tweet 5 #random"
+	},
+	{
+		"id": "1067094924124872704",
+		"text": "tweet 6 #tech #test"
 	}
 ]

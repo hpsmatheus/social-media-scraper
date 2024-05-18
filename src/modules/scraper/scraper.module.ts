@@ -14,11 +14,13 @@ export default class ScraperModule implements OnModuleInit {
 	constructor(private readonly postService: PostService) {}
 
 	async onModuleInit(): Promise<void> {
-		if (!process.env.ENVIRONMENT.toString().toLowerCase().includes('prod')) {
-			const job = new CronJob(CronExpression.EVERY_10_SECONDS, () =>
-				new TwitterScraper(this.postService).getTweets()
-			)
+		const twitterScraper = new TwitterScraper(this.postService)
+
+		if (process.env.TWITTER_MODE.toString().toLowerCase() === 'mock') {
+			const job = new CronJob(CronExpression.EVERY_10_SECONDS, () => twitterScraper.getTweets())
 			job.start()
+		} else {
+			await twitterScraper.setMonitoringRules()
 		}
 	}
 }
