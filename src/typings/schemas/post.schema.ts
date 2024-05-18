@@ -13,6 +13,9 @@ export class Post {
 
 	@Prop({ required: true })
 	text: string
+
+	@Prop({ required: true })
+	timestamp: number
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)

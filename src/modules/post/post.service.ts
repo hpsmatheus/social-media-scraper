@@ -8,11 +8,16 @@ import { Post } from 'src/typings/schemas/post.schema'
 export default class PostService {
 	constructor(@InjectModel(Post.name) private readonly postModel: Model<Post>) {}
 
-	async create(incomingPosts: CreatePostInput[]): Promise<void> {
+	async saveMany(incomingPosts: CreatePostInput[]): Promise<void> {
 		for (const postInput of incomingPosts) {
 			const existingPost = await this.postModel.findOne({ externalId: postInput.id })
 			if (!existingPost) {
-				const post = new this.postModel({ externalId: postInput.id, text: postInput.text })
+				const post = new this.postModel({
+					externalId: postInput.id,
+					text: postInput.text,
+					timestamp: postInput.timestamp,
+				})
+
 				const result = await post.save()
 				Logger.log('saved post', result)
 			}
@@ -35,8 +40,22 @@ export default class PostService {
 
 			const ids = oldestTweets.map((tweet) => tweet._id)
 			await this.postModel.deleteMany({ _id: { $in: ids } })
+			Logger.log(`archived ${postsToDeleteCount} posts`)
 		}
+	}
 
-		Logger.log(`archived ${postsToDeleteCount} posts`)
+	async findNewest(): Promise<Post | null> {
+		const posts = await this.postModel.find().sort({ timestamp: -1 }).limit(1)
+		if (posts.length > 0) return posts[0]
+		return null
+	}
+
+	async countByInterval(startDate: number, endDate: number): Promise<number> {
+		return this.postModel.countDocuments({
+			timestamp: {
+				$gte: startDate,
+				$lte: endDate,
+			},
+		})
 	}
 }

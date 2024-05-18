@@ -13,14 +13,22 @@ import CoreModule from '../core/core.module'
 	providers: [PostService, PostProcessor],
 })
 export default class PostModule implements OnModuleInit {
-	constructor(private readonly tweetsProcessor: PostProcessor) {}
+	constructor(private readonly postProcessor: PostProcessor) {}
 
 	async onModuleInit(): Promise<void> {
 		await this.initPostsProcessor()
+		await this.initAnomalyDetection()
 	}
 
 	private async initPostsProcessor(): Promise<void> {
-		const job = new CronJob(CronExpression.EVERY_10_SECONDS, () => this.tweetsProcessor.process())
+		const job = new CronJob(CronExpression.EVERY_5_SECONDS, () => this.postProcessor.process())
+		job.start()
+	}
+
+	private async initAnomalyDetection(): Promise<void> {
+		const job = new CronJob(CronExpression.EVERY_10_SECONDS, () =>
+			this.postProcessor.detectAnomaly()
+		)
 		job.start()
 	}
 }
