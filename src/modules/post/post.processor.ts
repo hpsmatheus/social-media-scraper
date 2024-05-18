@@ -7,7 +7,7 @@ import { CreatePostInput } from 'src/typings/post/post.dto'
 
 const cacheList = process.env.TWEETS_CACHE_KEY
 
-class NotificationService {
+export class NotificationService {
 	static notify(): void {
 		Logger.warn('anomaly detected...')
 	}
