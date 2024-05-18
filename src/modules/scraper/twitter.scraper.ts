@@ -1,6 +1,8 @@
-import { HttpStatus, Injectable, NotImplementedException } from '@nestjs/common'
+import { HttpStatus, Injectable, Logger, NotImplementedException } from '@nestjs/common'
 import * as needle from 'needle'
-import PostService from '../post/post.service'
+import { CacheService } from '../core/cache.service'
+
+const cacheList = process.env.TWEETS_CACHE_KEY
 
 @Injectable()
 export default class TwitterScraper {
@@ -8,7 +10,9 @@ export default class TwitterScraper {
 
 	private apiToken = { Authorization: `Bearer ${process.env.TWITTER_API_TOKEN}` }
 
-	constructor(private readonly postService: PostService) {}
+	constructor(private readonly cacheService: CacheService) {
+		this.cacheService = new CacheService()
+	}
 
 	getTweets(): void {
 		const streamURL = `${this.twitterSearchUrl}/stream`
@@ -22,9 +26,10 @@ export default class TwitterScraper {
 		})
 
 		stream
-			.on('data', (data) => {
+			.on('data', async (data) => {
 				try {
-					this.postService.create(JSON.parse(data))
+					Logger.log('adding new tweet to cache...')
+					await this.cacheService.addToList(cacheList, JSON.parse(data))
 				} catch (e) {
 					if (data.detail === 'This stream is currently at the maximum allowed connection limit.') {
 						console.log(data.detail)
@@ -36,6 +41,7 @@ export default class TwitterScraper {
 			})
 			.on('err', (error) => {
 				//TODO: implement reconnect strategy
+				Logger.error('stream disconnected')
 				throw new NotImplementedException(error)
 			})
 	}

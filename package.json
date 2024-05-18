@@ -40,6 +40,7 @@
 		"dotenv": "^16.4.4",
 		"eslint-config-airbnb-typescript": "^17.1.0",
 		"express": "^4.19.2",
+		"ioredis": "^5.4.1",
 		"jest-mock-extended": "^3.0.5",
 		"mongoose": "^8.3.5",
 		"needle": "^3.3.1",

@@ -3,11 +3,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
-
-type TwitterPostDto = {
-	id: string
-	text: string
-}
+import TwitterPostDto from 'src/typings/twitter-post.dto'
 
 const twitterMockToken = 'twitter-mock-token'
 @Controller('search')
@@ -21,14 +17,14 @@ export default class TwitterMockController {
 
 		const filePath = path.resolve(__dirname, '../../../tweets.json')
 		const jsonData = fs.readFileSync(filePath, 'utf8')
+		const post = JSON.parse(jsonData) as TwitterPostDto
 
-		const posts = JSON.parse(jsonData) as TwitterPostDto[]
-		const filteredPosts = this.filterRelevantPosts(posts)
-		res.status(HttpStatus.OK).send(JSON.stringify(filteredPosts))
+		if (this.isPostRelevant(post)) return res.status(HttpStatus.OK).send(JSON.stringify(post))
+		return
 	}
 
-	private filterRelevantPosts(posts: TwitterPostDto[]): TwitterPostDto[] {
+	private isPostRelevant(post: TwitterPostDto): boolean {
 		const monitoredHashtags = process.env.MONITORED_HASHTAGS.split(',')
-		return posts.filter((post) => monitoredHashtags.some((hashtag) => post.text.includes(hashtag)))
+		return monitoredHashtags.some((hashtag) => post.data.text.includes(hashtag))
 	}
 }

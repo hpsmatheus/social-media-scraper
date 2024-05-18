@@ -2,22 +2,26 @@ import { Module, OnModuleInit } from '@nestjs/common'
 import { CronExpression } from '@nestjs/schedule'
 import { CronJob } from 'cron'
 import TwitterScraper from './twitter.scraper'
-import PostModule from '../post/post.module'
-import PostService from '../post/post.service'
+import CoreModule from '../core/core.module'
+import { CacheService } from '../core/cache.service'
 
 @Module({
-	imports: [PostModule],
+	imports: [CoreModule],
 	controllers: [],
 	providers: [],
 })
 export default class ScraperModule implements OnModuleInit {
-	constructor(private readonly postService: PostService) {}
+	constructor(private readonly cacheService: CacheService) {}
 
 	async onModuleInit(): Promise<void> {
-		const twitterScraper = new TwitterScraper(this.postService)
+		await this.initTwitterScraper()
+	}
+
+	private async initTwitterScraper(): Promise<void> {
+		const twitterScraper = new TwitterScraper(this.cacheService)
 
 		if (process.env.TWITTER_MODE.toString().toLowerCase() === 'mock') {
-			const job = new CronJob(CronExpression.EVERY_10_SECONDS, () => twitterScraper.getTweets())
+			const job = new CronJob(CronExpression.EVERY_5_SECONDS, () => twitterScraper.getTweets())
 			job.start()
 		} else {
 			await twitterScraper.setMonitoringRules()
