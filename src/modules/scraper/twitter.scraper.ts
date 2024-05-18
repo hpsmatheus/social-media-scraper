@@ -45,7 +45,7 @@ export default class TwitterScraper {
 		const hashTagFilter = `${process.env.MONITORED_HASHTAGS}`.replaceAll(',', ' OR ')
 
 		const data = {
-			add: [{ value: hashTagFilter }],
+			add: [{ value: hashTagFilter, tag: 'monitored_hashtags' }],
 		}
 
 		const headers = {
