@@ -127,8 +127,8 @@ $ npm run format
 
 - Develop a more robust mechanism to set filters of relevant posts. One possibility is to have and admin app in which business staff can set this filters and this api can consume it and use this filters to stream posts, converting the right filters for each different social network.
 - Implement a reconnect mechanism in case the stream disconnects.
-- The usage of Redis in this MVP will probably help to avoid bottlenecks in the database as it allows to set a specific pace of writing in the DB no matter how big is the traffic outside the application. But that also have some limitations. In future iterations we should probably approach strategies to avoid the API interface (at http level) and Redis to be overwhelmed.
-- Using a robust message queueing system can also make the api more fault tolerant and performative, using more workers to process the incoming data and retry mechanism to avoid data loss as the communication is asynchronous.
+- The usage of Redis in this MVP will probably help to avoid bottlenecks in the database as it allows to set a specific pace of writing in the DB no matter how big is the traffic outside the application. But that also have some limitations. In future iterations we should probably approach strategies to prevent the API interface (at http level) and Redis of being overwhelmed.
+- Using a robust message queueing system (like RabbitMq) can also make the api more fault tolerant and performative, using more workers to process the incoming data and retry mechanism to avoid data loss as the communication is asynchronous.
 - For now, archiving old posts it's actually deleting them but they could be moved to another data source depending on business requirements. In that way we would have a more performative database to perform heavy daily tasks and use this other data source only when consulting the history is needed (or for building dashboards in data systems, for example)
 
 ## Tech debts
