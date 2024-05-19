@@ -10,7 +10,7 @@ async function bootstrap(): Promise<void> {
 	app.useGlobalPipes(new ApiValidationPipe())
 
 	const options = new DocumentBuilder()
-		.setTitle('NestJS Boilerplate')
+		.setTitle('Social Media Scraper')
 		.setDescription('Backend API built with Nest.js')
 		.build()
 	const document = SwaggerModule.createDocument(app, options)
