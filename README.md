@@ -30,8 +30,6 @@ Once a tweet is streamed, the api will store it temporarily in a Redis instance 
 
 Last, but not least, the `ScraperModule` also handles the filtering set of the posts you wish to filter, so don't forget to specify the relevant hashtags in the `MONITORED_HASHTAGS='#test,#tech'` env variable. In the twitter mock mode, no endpoint will be actually called for this, instead the fake `/stream` endpoint will handle the filtering for you.
 
-Tech Stack: [Node.js](https://nodejs.org/en/docs/), [Typescript](https://www.typescriptlang.org/docs/), [Nest.js](https://docs.nestjs.com/), [PostgreSQL](https://www.postgresql.org/docs/)
-
 ### Anomaly detection
 
 The anomaly detection system is based on an average of relevant posts per minute and on a variation percent. If the system identify a variation higher than the percent defined, it will consider it as an anomaly. These values can also be set using env variables:
