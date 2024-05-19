@@ -47,6 +47,10 @@ The `NotificationService` is responsible for notifying anomalies, but at this po
 
 Some of the business advantages of having such a system is: monitor end user behavior and use it to build personas, antecipate user needs/wishes and fast reaction to moments of brand crisis.
 
+## App Demo
+
+https://youtu.be/rSZD_fb6840
+
 ## Requirements
 
 - Node v20
@@ -134,6 +138,7 @@ $ npm run format
 - Make sure to hide sensitive information on logs
 - Make the post processing mechanism generic so it can deal with posts of other social media in an agnostic approach.
 - Create mechanism that checks if all required env variables are filled in the application start up
+- Rename branch from master to main
 
 ## Time Tracking
 
