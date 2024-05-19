@@ -26,7 +26,7 @@ export default class PostModule implements OnModuleInit {
 	}
 
 	private async initAnomalyDetection(): Promise<void> {
-		const job = new CronJob(CronExpression.EVERY_10_SECONDS, () =>
+		const job = new CronJob(CronExpression.EVERY_5_SECONDS, () =>
 			this.postProcessor.detectAnomaly()
 		)
 		job.start()

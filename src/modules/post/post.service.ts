@@ -25,8 +25,6 @@ export default class PostService {
 	}
 
 	async archiveOldPosts(): Promise<void> {
-		Logger.log('archiving old posts...')
-
 		const maxPostsAllowed = Number(process.env.MAX_STORED_POSTS)
 		const existingPosts = await this.postModel.countDocuments()
 		const postsToDeleteCount = existingPosts - maxPostsAllowed
@@ -40,7 +38,7 @@ export default class PostService {
 
 			const ids = oldestTweets.map((tweet) => tweet._id)
 			await this.postModel.deleteMany({ _id: { $in: ids } })
-			Logger.log(`archived ${postsToDeleteCount} posts`)
+			Logger.warn(`archived ${postsToDeleteCount} posts`)
 		}
 	}
 

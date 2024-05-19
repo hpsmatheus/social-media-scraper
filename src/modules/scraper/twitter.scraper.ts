@@ -40,7 +40,7 @@ export default class TwitterScraper {
 					await this.cacheService.addToList(cacheList, tweet)
 				} catch (e) {
 					if (data.detail === 'This stream is currently at the maximum allowed connection limit.') {
-						console.log(data.detail)
+						Logger.error(data.detail)
 						process.exit(1)
 					} else {
 						// Keep alive signal received. Do nothing.
